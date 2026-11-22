@@ -30,7 +30,7 @@ jobs:
       - name: Собираем Web-версию с ключами из Secrets
         run: >
           flutter build web --release
-          --base-href "/"
+          --base-href "/new_planning_system/"
           --dart-define=SUPABASE_URL=${{ secrets.SUPABASE_URL }}
           --dart-define=SUPABASE_KEY=${{ secrets.SUPABASE_KEY }}
 
