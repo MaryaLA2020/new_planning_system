@@ -1,4 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Доступ к сети нужен для работы с Supabase на всех сборках, включая release. -->
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:label="project_app"
         android:name="${applicationName}"
