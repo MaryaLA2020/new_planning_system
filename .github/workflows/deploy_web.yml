@@ -1,0 +1,40 @@
+name: Build and Deploy Flutter Web
+
+on:
+  push:
+    branches:
+      - main # Запускается при каждом пуше в ветку main (если у вас ветка master, замените на master)
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: project_app
+
+    steps:
+      - name: Скачиваем код репозитория
+        uses: actions/checkout@v4
+
+      - name: Устанавливаем Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Устанавливаем зависимости
+        run: flutter pub get
+
+      - name: Собираем Web-версию с ключами из Secrets
+        run: >
+          flutter build web --release
+          --dart-define=SUPABASE_URL=${{ secrets.SUPABASE_URL }}
+          --dart-define=SUPABASE_KEY=${{ secrets.SUPABASE_KEY }}
+
+      - name: Публикуем готовый сайт в ветку gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./project_app/build/web
